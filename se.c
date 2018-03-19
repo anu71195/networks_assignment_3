@@ -6,6 +6,7 @@
 #include <arpa/inet.h>    //close
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <time.h>
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
 
@@ -23,46 +24,86 @@ int crcCheck(char* input)
     keylen=strlen(key);
     msglen=strlen(input);
     strcpy(key1,key);
+    char *temp_input=(char *)malloc(256*sizeof(char));
+	strcpy(temp_input,input);
+printf("--temp_input%s--",temp_input);
 
-    for (i=0;i<keylen-1;i++)
+for(int j=0;j<msglen;j++)
+{
+    printf("------%c ",input[j]);
+   if(temp_input[j]=='1')
+   { 
+    for(int i=0;i<keylen;i++)
     {
-        input[msglen+i]='0';
+      // printf("%d--",msglen+keylen-2+i-keylen+1);
+      printf("%c-",input[i+j]);
+      if(temp_input[i+j]==key[i])
+          temp_input[i+j]='0';
+        else 
+          temp_input[i+j]='1';
     }
-
-    for (i=0;i<keylen;i++)
-     temp[i]=input[i];
-
-    for (i=0;i<msglen;i++)
+  }
+  else
+   { 
+    for(int i=0;i<keylen;i++)
     {
-        quot[i]=temp[0];
-        if(quot[i]=='0')
-        {
-         for (j=0;j<keylen;j++)
-         key[j]='0';
-        }
-         else
-         {
-         for (j=0;j<keylen;j++)
-         key[j]=key1[j];
-        }
-        for (j=keylen-1;j>0;j--)
-        {
-            if(temp[j]==key[j])
-            rem[j-1]='0';
-            else
-            rem[j-1]='1';
-        }
-        rem[keylen-1]=input[i+keylen];
-        strcpy(temp,rem);
+      // printf("%d--",msglen+keylen-2+i-keylen+1);
+      printf("%c-",input[i+j]);
+      // if(temp_input[i+j]=='0')
+      //     temp_input[i+j]='0';
+      //   else 
+      //     temp_input[i+j]='1';
     }
-    strcpy(rem,temp);
-    rem_len=strlen(rem);
+  } 
+}
+printf("--temp_input%s--",temp_input);
+printf("--%d--msglen",msglen);
+    // for (i=0;i<keylen-1;i++)
+    // {
+    //     input[msglen+i]='0';
+    // }
 
-    for(i=0;i<rem_len;i++)
+    // for (i=0;i<keylen;i++)
+    //  temp[i]=input[i];
+
+    // for (i=0;i<msglen;i++)
+    // {
+    //     quot[i]=temp[0];
+    //     if(quot[i]=='0')
+    //     {
+    //      for (j=0;j<keylen;j++)
+    //      key[j]='0';
+    //     }
+    //      else
+    //      {
+    //      for (j=0;j<keylen;j++)
+    //      key[j]=key1[j];
+    //     }
+    //     for (j=keylen-1;j>0;j--)
+    //     {
+    //         if(temp[j]==key[j])
+    //         rem[j-1]='0';
+    //         else
+    //         rem[j-1]='1';
+    //     }
+    //     rem[keylen-1]=input[i+keylen];
+    //     strcpy(temp,rem);
+    // }
+    // strcpy(rem,temp);	
+    // rem_len=strlen(rem);
+    // printf("%s",rem);
+printf("--temp_input%s--",temp_input);
+	
+    for(i=0;i<msglen;i++)
     {
-        if(rem[i]=='1')
-            return 1;
+    	printf("i'm in side 1 and %c\t",temp_input[i]);
+        if(temp_input[i]=='1')
+           {
+           	printf("print returning 1");
+           	return 1;
+           } 
     }
+    printf("i'm free from 1");
     return 0;
 }
 //ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
@@ -118,7 +159,7 @@ int main(int argc , char *argv[])
     }
 
     //create a master socket
-    if( (master_socket = socket(AF_INET , SOCK_STREAM , 0)) == 0)
+    if( (master_socket = socket(AF_INET , SOCK_STREAM , 0)) < 0)
     {
         perror("socket failed");
         exit(EXIT_FAILURE);
@@ -240,6 +281,8 @@ int main(int argc , char *argv[])
                 if ((valread = read( sd , buffer, 1024)) == 0)
                 {
                     //Somebody disconnected , get his details and print
+                        printf("%s--buffer\n",buffer );
+
                     getpeername(sd , (struct sockaddr*)&address , \
                         (socklen_t*)&addrlen);
                     printf("Host disconnected , ip %s , port %d \n" ,
@@ -258,26 +301,38 @@ int main(int argc , char *argv[])
 
                        // buffer[valread] = '\0';
                         //send(sd , buffer , strlen(buffer) , 0 );
+                		char temp[256];
+                		strcpy(temp,buffer);
                         int le=strlen(buffer);
-                        printf("%s\n",buffer );
+                        printf("%s--buffer\n",buffer );
+                        printf("%d",strlen(buffer));
+                        for(int i=0;i<strlen(buffer);i++)
+                        	if(buffer[i]!='0' && buffer[i]!='1')
+                        	{
+                        		temp[i]='\0';
+                        		break;
+                        	}
+                        printf("%s--bufer\n",buffer );
+                        printf("%s--bufer\n",temp );
+                        strcpy(buffer,temp);
 
 
                         int check=crcCheck(buffer);
-                        printf("%d\n",check );
+                        printf("%d---i'm check\n",check );
                         int co=0;                                                                              //chk
                       do
                        {
                          sleep(1);
                          co++;
-                         printf("a\n" );
+                         // printf("a\n" );
                         int ran=rand()%3;
                         if(check==0)
                         {
-                          printf("b\n" );
+                          // printf("b\n" );
                         printf("Message recieved wihtout error");
                         if(ran==1)
                         {
-                          printf("e\n" );
+                          // printf("e\n" );
                             int x=rand()%strlen(ack);
                             strcpy(err,ack);
                             if(err[x]=='0')
