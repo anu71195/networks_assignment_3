@@ -92,11 +92,11 @@ printf("--%d--msglen",msglen);
     // strcpy(rem,temp);	
     // rem_len=strlen(rem);
     // printf("%s",rem);
-printf("--temp_input%s--",temp_input);
+printf("--temp_input%s--and message lenght is %d",temp_input,msglen);
 	
-    for(i=0;i<msglen;i++)
+    for(i=0;i<strlen(temp_input);i++)
     {
-    	printf("i'm in side 1 and %c\t",temp_input[i]);
+    	printf("i'm in side and %c\t",temp_input[i]);
         if(temp_input[i]=='1')
            {
            	printf("print returning 1");
@@ -316,9 +316,10 @@ int main(int argc , char *argv[])
                         printf("%s--bufer\n",temp );
                         strcpy(buffer,temp);
 
-
+                      printf("%s--bufer\n",buffer );
+                        printf("%s--bufer\n",temp );
                         int check=crcCheck(buffer);
-                        printf("%d---i'm check\n",check );
+                        printf("check%d---i'm check\n",check );
                         int co=0;                                                                              //chk
                       do
                        {
@@ -331,7 +332,8 @@ int main(int argc , char *argv[])
                           // printf("b\n" );
                         printf("Message recieved wihtout error");
                         if(ran==1)
-                        {
+                        {printf("ran is 1");
+
                           // printf("e\n" );
                             int x=rand()%strlen(ack);
                             strcpy(err,ack);

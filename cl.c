@@ -239,47 +239,54 @@ int main(int argc, char *argv[])
 
       strcpy(copy,bu);
       error_switch=rand()%2;
-      //memset(buffer,0,sizeof(buffer));
-    //  memset(copy,0,sizeof(copy));
+      // memset(buffer,0,sizeof(buffer));
+     // memset(copy,0,sizeof(copy));
       co++;
-      // strcpy(bu,copy);
+      strcpy(bu,copy);
 
-      // printf("%s--%s--%d",copy,bu,error_switch);
+      printf("%s--%s--%d--errors",copy,bu,error_switch);
   	   
-    // if(error_switch==1)
-    // {
-    //     int  bit_error_rate=rand()%strlen(bu);
+    if(error_switch==1)
+    {
+    	printf("i'm in");
+        int  bit_error_rate=rand()%strlen(bu);
+        printf("%d is the bit error rate",bit_error_rate);
     //     // int  bit_error_rate=4;
-    //     int i,x,count[strlen(bu)];	
-    //     for(i=0;i<strlen(bu);i++)
-    //     {
-    //         count[i]=0;
-    //     }
+        int i,x,count[strlen(bu)];
+        // printf("%d",strlen(bu))	;
+        for(i=0;i<strlen(bu);i++)
+        {
+            count[i]=0;
+        }
 
-    //     for(i=0;i<bit_error_rate;i++)
-    //     {
-    //         x=rand()%strlen(bu);
-    //         while(count[x]!=1 && i!=0)
-    //         {
-    //      	   x=rand()%strlen(bu);
+        for(i=0;i<bit_error_rate;i++)
+        {
+        	for(int j=0;j<strlen(bu);j++)
+        		printf("%d ",count[j]);
+            x=rand()%strlen(bu);
+         	   printf("%d is x",x);
 
-    //      	   printf("%d ",x);
-
-	   //      }
-
-    //         count[x]=1;
-    //         if(copy[x]=='0')
-    //             copy[x]='1';
-    //         else
-    //             copy[x]='0';
-    //   printf("\n%s--%s--%d\n",copy,bu,x);
+            while(count[x]!=0 && i!=0)
+            {
+            	printf("inside %d",count[x]);
+         	   x=rand()%strlen(bu);
 
 
+	        }
 
-    //     }
+            count[x]=1;
+            if(copy[x]=='0')
+                copy[x]='1';
+            else
+                copy[x]='0';
+      printf("\n%s--%s--%d\n",copy,bu,x);
 
-    // }
-      printf("\n%s--%s--%d",copy,bu,error_switch);
+
+
+        }
+
+    }
+      printf("\n%s--%s--%d copy bu",copy,bu,error_switch);
 
     if(strcmp(copy,bu)!=0)
 	    printf("error bits present\n"  );
