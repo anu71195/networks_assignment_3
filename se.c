@@ -26,38 +26,38 @@ int crcCheck(char* input)
     strcpy(key1,key);
     char *temp_input=(char *)malloc(256*sizeof(char));
 	strcpy(temp_input,input);
-printf("--temp_input%s--",temp_input);
+// printf("--temp_input%s--",temp_input);
 
 for(int j=0;j<msglen;j++)
 {
-    printf("------%c ",input[j]);
+    // printf("------%c ",input[j]);
    if(temp_input[j]=='1')
    { 
     for(int i=0;i<keylen;i++)
     {
       // printf("%d--",msglen+keylen-2+i-keylen+1);
-      printf("%c-",input[i+j]);
+      // printf("%c-",input[i+j]);
       if(temp_input[i+j]==key[i])
           temp_input[i+j]='0';
         else 
           temp_input[i+j]='1';
     }
   }
-  else
-   { 
-    for(int i=0;i<keylen;i++)
-    {
-      // printf("%d--",msglen+keylen-2+i-keylen+1);
-      printf("%c-",input[i+j]);
-      // if(temp_input[i+j]=='0')
-      //     temp_input[i+j]='0';
-      //   else 
-      //     temp_input[i+j]='1';
-    }
-  } 
+  // else
+  //  { 
+  //   for(int i=0;i<keylen;i++)
+  //   {
+  //     // printf("%d--",msglen+keylen-2+i-keylen+1);
+  //     // printf("%c-",input[i+j]);
+  //     // if(temp_input[i+j]=='0')
+  //     //     temp_input[i+j]='0';
+  //     //   else 
+  //     //     temp_input[i+j]='1';
+  //   }
+  // } 
 }
-printf("--temp_input%s--",temp_input);
-printf("--%d--msglen",msglen);
+// printf("--temp_input%s--",temp_input);
+// printf("--%d--msglen",msglen);
     // for (i=0;i<keylen-1;i++)
     // {
     //     input[msglen+i]='0';
@@ -96,14 +96,14 @@ printf("--temp_input%s--and message lenght is %d",temp_input,msglen);
 	
     for(i=0;i<strlen(temp_input);i++)
     {
-    	printf("i'm in side and %c\t",temp_input[i]);
+    	// printf("i'm in side and %c\t",temp_input[i]);
         if(temp_input[i]=='1')
            {
-           	printf("print returning 1");
+           	// printf("print returning 1");
            	return 1;
            } 
     }
-    printf("i'm free from 1");
+    // printf("i'm free from 1");
     return 0;
 }
 //ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
@@ -270,7 +270,7 @@ int main(int argc , char *argv[])
 
         //else its some IO operation on some other socket
         for (i = 0; i < max_clients; i++)
-        {
+        { 
             sd = client_socket[i];
 
             if (FD_ISSET( sd , &readfds))
@@ -278,10 +278,12 @@ int main(int argc , char *argv[])
                 //Check if it was for closing , and also read the
                 //incoming message
                 //printf("ktry\n");
+                for(int i=0;i<256;i++)
+                	buffer[i]='\0';
                 if ((valread = read( sd , buffer, 1024)) == 0)
                 {
                     //Somebody disconnected , get his details and print
-                        printf("%s--buffer\n",buffer );
+                        // printf("%s--buffer\n",buffer );
 
                     getpeername(sd , (struct sockaddr*)&address , \
                         (socklen_t*)&addrlen);
@@ -304,20 +306,20 @@ int main(int argc , char *argv[])
                 		char temp[256];
                 		strcpy(temp,buffer);
                         int le=strlen(buffer);
-                        printf("%s--buffer\n",buffer );
-                        printf("%d",strlen(buffer));
+                        // printf("%s--buffer\n",buffer );
+                        // printf("%d",strlen(buffer));
                         for(int i=0;i<strlen(buffer);i++)
                         	if(buffer[i]!='0' && buffer[i]!='1')
                         	{
                         		temp[i]='\0';
                         		break;
                         	}
-                        printf("%s--bufer\n",buffer );
-                        printf("%s--bufer\n",temp );
+                        // printf("%s--bufer\n",buffer );
+                        // printf("%s--bufer\n",temp );
                         strcpy(buffer,temp);
 
                       printf("%s--bufer\n",buffer );
-                        printf("%s--bufer\n",temp );
+                        // printf("%s--bufer\n",temp );
                         int check=crcCheck(buffer);
                         printf("check%d---i'm check\n",check );
                         int co=0;                                                                              //chk
@@ -332,7 +334,8 @@ int main(int argc , char *argv[])
                           // printf("b\n" );
                         printf("Message recieved wihtout error");
                         if(ran==1)
-                        {printf("ran is 1");
+                        {
+                        	printf("ran is 1");
 
                           // printf("e\n" );
                             int x=rand()%strlen(ack);

@@ -38,7 +38,7 @@ int getMin()
 
 
 char* stringToBinary(char* s) {
-    printf("%s--i am s",s);
+    // printf("%s--i am s",s);
     if(s == NULL) return 0; /* no input string */
     size_t i;
     int j,temp;
@@ -70,12 +70,12 @@ char *input=(char *)malloc(256*sizeof(char));
 char *temp_input=(char *)malloc(256*sizeof(char));
 
  input=stringToBinary(real_input);
- printf("here %s---",input);
+ // printf("here %s---",input);
  strcpy(key,"100000111");
  keylen=strlen(key);
- printf("%d--key",keylen);
+ // printf("%d--key",keylen);
  msglen=strlen(input);
- printf("%d--msglen",msglen);
+ // printf("%d--msglen",msglen);
  char buff[msglen+keylen];
  strcpy(key1,key);
 
@@ -87,23 +87,23 @@ char *temp_input=(char *)malloc(256*sizeof(char));
  // input[msglen+keylen-6]='1';
 
  input[msglen+keylen-1]='\0';
-printf("%s--input",input);
+// printf("%s--input",input);
 strcpy(temp_input,input);
-printf("%s--temp_input",temp_input);
-printf("%s--key\n\n",key);
+// printf("%s--temp_input",temp_input);
+// printf("%s--key\n\n",key);
 
 
 
 
 for(int j=0;j<msglen;j++)
 {
-    printf("------%c ",input[j]);
+    // printf("------%c ",input[j]);
    if(temp_input[j]=='1')
    { 
     for(int i=0;i<keylen;i++)
     {
       // printf("%d--",msglen+keylen-2+i-keylen+1);
-      printf("%c-",input[i+j]);
+      // printf("%c-",input[i+j]);
       if(temp_input[i+j]==key[i])
           temp_input[i+j]='0';
         else 
@@ -115,7 +115,7 @@ for(int j=0;j<msglen;j++)
     for(int i=0;i<keylen;i++)
     {
       // printf("%d--",msglen+keylen-2+i-keylen+1);
-      printf("%c-",input[i+j]);
+      // printf("%c-",input[i+j]);
       if(temp_input[i+j]=='0')
           temp_input[i+j]='0';
         else 
@@ -124,10 +124,10 @@ for(int j=0;j<msglen;j++)
   } 
 }
 
-printf("--\n\n%s",temp_input);
+// printf("--\n\n%s",temp_input);
 for(int i=msglen;i<msglen+keylen-1;i++)
   input[i]=temp_input[i];
-printf("--\n\n%s",input);
+// printf("--\n\n%s",input);
 
 
 //  for (i=0;i<keylen;i++)
@@ -244,11 +244,11 @@ int main(int argc, char *argv[])
       co++;
       strcpy(bu,copy);
 
-      printf("%s--%s--%d--errors",copy,bu,error_switch);
+      // printf("%s--%s--%d--errors",copy,bu,error_switch);
   	   
     if(error_switch==1)
     {
-    	printf("i'm in");
+    	// printf("i'm in");
         int  bit_error_rate=rand()%strlen(bu);
         printf("%d is the bit error rate",bit_error_rate);
     //     // int  bit_error_rate=4;
@@ -261,14 +261,14 @@ int main(int argc, char *argv[])
 
         for(i=0;i<bit_error_rate;i++)
         {
-        	for(int j=0;j<strlen(bu);j++)
-        		printf("%d ",count[j]);
+        	// for(int j=0;j<strlen(bu);j++)
+        		// printf("%d ",count[j]);
             x=rand()%strlen(bu);
-         	   printf("%d is x",x);
+         	   // printf("%d is x",x);
 
             while(count[x]!=0 && i!=0)
             {
-            	printf("inside %d",count[x]);
+            	// printf("inside %d",count[x]);
          	   x=rand()%strlen(bu);
 
 
@@ -279,14 +279,14 @@ int main(int argc, char *argv[])
                 copy[x]='1';
             else
                 copy[x]='0';
-      printf("\n%s--%s--%d\n",copy,bu,x);
+      // printf("\n%s--%s--%d\n",copy,bu,x);
 
 
 
         }
 
     }
-      printf("\n%s--%s--%d copy bu",copy,bu,error_switch);
+      // printf("\n%s--%s--%d copy bu",copy,bu,error_switch);
 
     if(strcmp(copy,bu)!=0)
 	    printf("error bits present\n"  );
@@ -314,9 +314,13 @@ int main(int argc, char *argv[])
     else
     printf("Unknown response\n");
     if(t1-t2>3 || t2-t1 >3)
+    {
 	    strcpy(buffer,nack);
-    }while(strcmp(buffer,ack)!=0 && strcmp(buffer,nack)!=0);
-
+	    break;
+    }
+    }while(strcmp(buffer,ack)!=0);// && strcmp(buffer,nack)!=0);
+    if(strcmp(buffer,ack)==0)
+    	exit(1);
   }while(strcmp(buffer,nack)==0 && co<8);
     return 0;
 }
