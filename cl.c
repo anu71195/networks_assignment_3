@@ -130,9 +130,11 @@ int main(int argc, char *argv[])
 
     srand(time(NULL));
     int sockfd, portno, n,t1,t2;
+    int number_of_trials=100000;
    int  error_switch=1;
     struct sockaddr_in serv_addr;
     struct hostent *server;
+    int time_out_client=3;
 
     char buffer[256],buffe[256],ack[256],nack[256],copy[256];
     strcpy(ack,"010000010100001101001011");
@@ -158,6 +160,8 @@ int main(int argc, char *argv[])
     serv_addr.sin_port = htons(portno);
     if (connect(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0)
         error("ERROR connecting");
+while(1)
+{
     printf("Please enter the message: ");
     bzero(buffe,256);
     fgets(buffe,255,stdin);
@@ -173,7 +177,8 @@ int main(int argc, char *argv[])
 
 
       strcpy(copy,bu);
-      error_switch=rand()%2;
+      error_switch=rand()%4;
+      // printf("error error_switch is %d",error_switch);
       co++;
       strcpy(bu,copy);
 
@@ -181,7 +186,10 @@ int main(int argc, char *argv[])
     if(error_switch==1)
     {
         int  bit_error_rate=rand()%strlen(bu);
-        printf("%d is the bit error rate",bit_error_rate);
+        if(bit_error_rate>0)
+        {
+	        printf("\nErrors are present\n%d is the bit error rate",bit_error_rate);
+	    }
         int i,x,count[strlen(bu)];
         for(i=0;i<strlen(bu);i++)
         {
@@ -211,18 +219,21 @@ int main(int argc, char *argv[])
     }
 
     if(strcmp(copy,bu)!=0)
-	    printf("error bits present\n"  );
+	    printf("\nactual data is changed due to error\n"  );
 	else
 		printf("No errors\n");
+
     n = write(sockfd,copy,strlen(copy));
     if (n < 0)
          error("ERROR writing to socket");
-    t1=getMin();
    printf("\ndata sent : %s\n",copy );
+
+    t1=getMin();
 
     do{
       t2=getMin();
     bzero(buffer,256);
+
     n = read(sockfd,buffer,255);
     if (n < 0)
          error("ERROR reading from socket");
@@ -231,15 +242,22 @@ int main(int argc, char *argv[])
     else if(strcmp(buffer,nack)==0)
     printf("NACK\n" );
     else
-    printf("Unknown response\n");
-    if(t1-t2>3 || t2-t1 >3)
+    {
+	    printf("Unknown response\n");
+	        n = write(sockfd,copy,strlen(copy));
+	    if (n < 0)
+		     error("ERROR writing to socket");
+	}
+    if(t1-t2>time_out_client || t2-t1 >time_out_client)
     {
 	    strcpy(buffer,nack);
 	    break;
     }
-    }while(strcmp(buffer,ack)!=0);// && strcmp(buffer,nack)!=0);
-    if(strcmp(buffer,ack)==0)
-    	exit(1);
-  }while(strcmp(buffer,nack)==0 && co<8);
+
+    }while(strcmp(buffer,ack)!=0&& strcmp(buffer,nack)!=0);
+    // if(strcmp(buffer,ack)==0)
+    // 	exit(1);
+  }while(strcmp(buffer,nack)==0 && co<number_of_trials);
+}
     return 0;
 }
