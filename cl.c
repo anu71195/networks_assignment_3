@@ -199,7 +199,7 @@ while(1)
         int  bit_error_rate=rand()%strlen(bu);
         if(bit_error_rate>0)
         {
-	        printf("\nErrors are present\n%d is the bit error rate\nprobability of error rate is %f\n",bit_error_rate,((float)bit_error_rate)/(strlen(bu)));
+	        printf("Errors are present\n%d is the bit error rate\nprobability of error rate is %f\n",bit_error_rate,((float)bit_error_rate)/(strlen(bu)));
 	    }
         int i,x,count[strlen(bu)];
         for(i=0;i<strlen(bu);i++)
