@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 
     srand(time(NULL));
     int sockfd, portno, n,t1,t2;
-    int number_of_trials=100000;
+    int number_of_trials=2000;
    int  error_switch=1;
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -162,7 +162,16 @@ int main(int argc, char *argv[])
         error("ERROR connecting");
 while(1)
 {
+	printf("type 0 for giving input and 1 for exiting the current client :-");
+	int decide;
+	scanf("%d",&decide);
+	if(decide==1)
+	{
+		close(sockfd);
+		exit(1);
+	}
     printf("Please enter the message: ");
+    sleep(1);
     bzero(buffe,256);
     fgets(buffe,255,stdin);
     char * t_bu=(char *)malloc(256*sizeof(char));

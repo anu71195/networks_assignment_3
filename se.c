@@ -168,7 +168,9 @@ int main(int argc , char *argv[])
 
     while(TRUE)
     {
-    	printf("inside the while looop\n");
+    	int decision=0;
+    	if(decision==1)
+    		exit(1);
         //clear the socket set
         FD_ZERO(&readfds);
 
@@ -261,7 +263,10 @@ int main(int argc , char *argv[])
                         (socklen_t*)&addrlen);
                     printf("Host disconnected , ip %s , port %d \n" ,
                           inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-
+                    printf("type 0 to continue and 1 to exit the server:-");
+                    scanf("%d",&decision);
+                    if(decision==1)
+                    	exit(1);
                     //Close the socket and mark as 0 in list for reuse
                     close( sd );
                     client_socket[i] = 0;
@@ -375,7 +380,7 @@ int main(int argc , char *argv[])
                         }
                         if (n < 0) perror("ERROR writing to socket\n");
 
-                    }while(error_flag==1 && co<8);
+                    }while(error_flag==1 && co<2);
                 }
             }
         }
