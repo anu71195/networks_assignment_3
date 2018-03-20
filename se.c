@@ -26,87 +26,33 @@ int crcCheck(char* input)
     strcpy(key1,key);
     char *temp_input=(char *)malloc(256*sizeof(char));
 	strcpy(temp_input,input);
-// printf("--temp_input%s--",temp_input);
 
 for(int j=0;j<msglen;j++)
 {
-    // printf("------%c ",input[j]);
    if(temp_input[j]=='1')
    { 
     for(int i=0;i<keylen;i++)
     {
-      // printf("%d--",msglen+keylen-2+i-keylen+1);
-      // printf("%c-",input[i+j]);
       if(temp_input[i+j]==key[i])
           temp_input[i+j]='0';
         else 
           temp_input[i+j]='1';
     }
   }
-  // else
-  //  { 
-  //   for(int i=0;i<keylen;i++)
-  //   {
-  //     // printf("%d--",msglen+keylen-2+i-keylen+1);
-  //     // printf("%c-",input[i+j]);
-  //     // if(temp_input[i+j]=='0')
-  //     //     temp_input[i+j]='0';
-  //     //   else 
-  //     //     temp_input[i+j]='1';
-  //   }
-  // } 
+  
 }
-// printf("--temp_input%s--",temp_input);
-// printf("--%d--msglen",msglen);
-    // for (i=0;i<keylen-1;i++)
-    // {
-    //     input[msglen+i]='0';
-    // }
 
-    // for (i=0;i<keylen;i++)
-    //  temp[i]=input[i];
-
-    // for (i=0;i<msglen;i++)
-    // {
-    //     quot[i]=temp[0];
-    //     if(quot[i]=='0')
-    //     {
-    //      for (j=0;j<keylen;j++)
-    //      key[j]='0';
-    //     }
-    //      else
-    //      {
-    //      for (j=0;j<keylen;j++)
-    //      key[j]=key1[j];
-    //     }
-    //     for (j=keylen-1;j>0;j--)
-    //     {
-    //         if(temp[j]==key[j])
-    //         rem[j-1]='0';
-    //         else
-    //         rem[j-1]='1';
-    //     }
-    //     rem[keylen-1]=input[i+keylen];
-    //     strcpy(temp,rem);
-    // }
-    // strcpy(rem,temp);	
-    // rem_len=strlen(rem);
-    // printf("%s",rem);
 printf("--temp_input%s--and message lenght is %d",temp_input,msglen);
 	
     for(i=0;i<strlen(temp_input);i++)
     {
-    	// printf("i'm in side and %c\t",temp_input[i]);
         if(temp_input[i]=='1')
            {
-           	// printf("print returning 1");
            	return 1;
            } 
     }
-    // printf("i'm free from 1");
     return 0;
 }
-//ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt
 
 char* stringToBinary(char* s) {
     if(s == NULL) return 0; /* no input string */
@@ -306,20 +252,15 @@ int main(int argc , char *argv[])
                 		char temp[256];
                 		strcpy(temp,buffer);
                         int le=strlen(buffer);
-                        // printf("%s--buffer\n",buffer );
-                        // printf("%d",strlen(buffer));
                         for(int i=0;i<strlen(buffer);i++)
                         	if(buffer[i]!='0' && buffer[i]!='1')
                         	{
                         		temp[i]='\0';
                         		break;
                         	}
-                        // printf("%s--bufer\n",buffer );
-                        // printf("%s--bufer\n",temp );
                         strcpy(buffer,temp);
 
                       printf("%s--bufer\n",buffer );
-                        // printf("%s--bufer\n",temp );
                         int check=crcCheck(buffer);
                         printf("check%d---i'm check\n",check );
                         int co=0;                                                                              //chk
@@ -327,17 +268,14 @@ int main(int argc , char *argv[])
                        {
                          sleep(1);
                          co++;
-                         // printf("a\n" );
                         int ran=rand()%3;
                         if(check==0)
                         {
-                          // printf("b\n" );
                         printf("Message recieved wihtout error");
                         if(ran==1)
                         {
                         	printf("ran is 1");
 
-                          // printf("e\n" );
                             int x=rand()%strlen(ack);
                             strcpy(err,ack);
                             if(err[x]=='0')
@@ -359,7 +297,6 @@ int main(int argc , char *argv[])
                         {
                             printf("Error during transmission\n");
                             error_flag=1;
-                            // while(un1--)
                             if(ran==1)
                             {
                                 printf("Yo\n");
@@ -380,10 +317,6 @@ int main(int argc , char *argv[])
                         }
                         if (n < 0) error("ERROR writing to socket");
 
-                        //n=read(newsockfd,buffer,455);
-                        //cond=atoi(buffer);
-                        //printf("%d\n",cond );
-                        //}while(cond==-1);
                     }while(error_flag==1 && co<8);
                 }
             }
