@@ -16,7 +16,6 @@ int getMin()
    char a,b;
     time_t s;
     time(&s);
-    //printf("%s\n",ctime(&s) );
     strcpy(ti,ctime(&s));
     int tim_len=strlen(ti);
     for(i=0;i<tim_len;i++)
@@ -38,7 +37,6 @@ int getMin()
 
 
 char* stringToBinary(char* s) {
-    // printf("%s--i am s",s);
     if(s == NULL) return 0; /* no input string */
     size_t i;
     int j,temp;
@@ -70,40 +68,27 @@ char *input=(char *)malloc(256*sizeof(char));
 char *temp_input=(char *)malloc(256*sizeof(char));
 
  input=stringToBinary(real_input);
- // printf("here %s---",input);
  strcpy(key,"100000111");
  keylen=strlen(key);
- // printf("%d--key",keylen);
  msglen=strlen(input);
- // printf("%d--msglen",msglen);
  char buff[msglen+keylen];
  strcpy(key1,key);
 
  for (i=0;i<keylen-1;i++) {
    input[msglen+i]='0';
  }
- // input[msglen+keylen-2]='1';
- // input[msglen+keylen-4]='1';
- // input[msglen+keylen-6]='1';
-
  input[msglen+keylen-1]='\0';
-// printf("%s--input",input);
 strcpy(temp_input,input);
-// printf("%s--temp_input",temp_input);
-// printf("%s--key\n\n",key);
 
 
 
 
 for(int j=0;j<msglen;j++)
 {
-    // printf("------%c ",input[j]);
    if(temp_input[j]=='1')
    { 
     for(int i=0;i<keylen;i++)
     {
-      // printf("%d--",msglen+keylen-2+i-keylen+1);
-      // printf("%c-",input[i+j]);
       if(temp_input[i+j]==key[i])
           temp_input[i+j]='0';
         else 
@@ -114,8 +99,6 @@ for(int j=0;j<msglen;j++)
    { 
     for(int i=0;i<keylen;i++)
     {
-      // printf("%d--",msglen+keylen-2+i-keylen+1);
-      // printf("%c-",input[i+j]);
       if(temp_input[i+j]=='0')
           temp_input[i+j]='0';
         else 
@@ -124,63 +107,14 @@ for(int j=0;j<msglen;j++)
   } 
 }
 
-// printf("--\n\n%s",temp_input);
 for(int i=msglen;i<msglen+keylen-1;i++)
   input[i]=temp_input[i];
-// printf("--\n\n%s",input);
-
-
-//  for (i=0;i<keylen;i++)
-//   temp[i]=input[i];
-
-// printf("%s--i'm key1",key1);
-
-
-//  for (i=0;i<msglen;i++) 
-//  {
-//    quot[i]=temp[0];
-
-//    if(quot[i]=='0')
-//     for (j=0;j<keylen;j++)
-//     key[j]='0'; 
-// else
-//     for (j=0;j<keylen;j++)
-//       key[j]=key1[j];
-
-//    for (j=keylen-1;j>0;j--) 
-//    {
-//      if(temp[j]==key[j])
-//       rem[j-1]='0'; 
-//     else
-//       rem[j-1]='1';
-//    }
-//    // rem[keylen-1]='\0';
-//    printf("--%s--i'm remainder",rem);
-//    rem[keylen-1]=input[i+keylen];
-//    strcpy(temp,rem);
-//  }
 
 
 
-//  strcpy(rem,temp);
-//  printf("\nQuotient is ");
-//  for (i=0;i<msglen;i++)
-//   printf("%c",quot[i]);
-//  printf("\nRemainder is ");
-//  for (i=0;i<keylen-1;i++)
-//   printf("%c",rem[i]);
-//  printf("\nFinal data is: ");
-//  for (i=0;i<msglen;i++)
-//  {
-//    buff[i]=input[i];
-//   printf("%c",input[i]);
-// }
-//  for (i=0;i<keylen-1;i++)
-//  {
-//    buff[msglen+i]=rem[i];
-//   printf("%c",rem[i]);
-// }
-
+printf("the remainder is:-");
+for(int i=msglen;i<msglen+keylen-1;i++)
+	printf("%c",input[i]);
  (*bu)=input;
 }
 
@@ -239,21 +173,15 @@ int main(int argc, char *argv[])
 
       strcpy(copy,bu);
       error_switch=rand()%2;
-      // memset(buffer,0,sizeof(buffer));
-     // memset(copy,0,sizeof(copy));
       co++;
       strcpy(bu,copy);
 
-      // printf("%s--%s--%d--errors",copy,bu,error_switch);
   	   
     if(error_switch==1)
     {
-    	// printf("i'm in");
         int  bit_error_rate=rand()%strlen(bu);
         printf("%d is the bit error rate",bit_error_rate);
-    //     // int  bit_error_rate=4;
         int i,x,count[strlen(bu)];
-        // printf("%d",strlen(bu))	;
         for(i=0;i<strlen(bu);i++)
         {
             count[i]=0;
@@ -261,14 +189,10 @@ int main(int argc, char *argv[])
 
         for(i=0;i<bit_error_rate;i++)
         {
-        	// for(int j=0;j<strlen(bu);j++)
-        		// printf("%d ",count[j]);
             x=rand()%strlen(bu);
-         	   // printf("%d is x",x);
 
             while(count[x]!=0 && i!=0)
             {
-            	// printf("inside %d",count[x]);
          	   x=rand()%strlen(bu);
 
 
@@ -279,14 +203,11 @@ int main(int argc, char *argv[])
                 copy[x]='1';
             else
                 copy[x]='0';
-      // printf("\n%s--%s--%d\n",copy,bu,x);
-
 
 
         }
 
     }
-      // printf("\n%s--%s--%d copy bu",copy,bu,error_switch);
 
     if(strcmp(copy,bu)!=0)
 	    printf("error bits present\n"  );
@@ -298,15 +219,12 @@ int main(int argc, char *argv[])
     t1=getMin();
    printf("\ndata sent : %s\n",copy );
 
-//       // printf("\n%s--%s--%d",copy,bu,error_switch);
-
     do{
       t2=getMin();
     bzero(buffer,256);
     n = read(sockfd,buffer,255);
     if (n < 0)
          error("ERROR reading from socket");
-//     // printf("\n%s %d ",buffer,strlen(buffer));
     if(strcmp(buffer,ack)==0)
     printf("ACK\n" );
     else if(strcmp(buffer,nack)==0)
