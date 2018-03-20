@@ -177,7 +177,7 @@ while(1)
 
 
       strcpy(copy,bu);
-      error_switch=rand()%4;
+      error_switch=rand()%2;
       co++;
       strcpy(bu,copy);
 
@@ -221,8 +221,11 @@ while(1)
 	    printf("\nactual data is changed due to error\n"  );
 	else
 		printf("No errors\n");
-
-    n = write(sockfd,copy,strlen(copy));
+	int copy_length=strlen(copy);
+	// copy[copy_length]='\0';
+	memset(copy + copy_length,'\0',256-copy_length);
+    // printf("%d--copylength %c\n",copy_length,copy[copy_length]);	
+    n = send(sockfd,copy,256,0);
     if (n < 0)
          error("ERROR writing to socket");
    printf("\ndata sent : %s\n",copy );
@@ -243,7 +246,12 @@ while(1)
     else
     {
 	    printf("Unknown response\n");
-	        n = write(sockfd,copy,strlen(copy));
+	    copy_length=strlen(copy);
+	    // printf("%d--copylength %c\n",copy_length,copy[copy_length]);
+	    // copy[copy_length]='\0';
+	memset(copy + copy_length,'\0',256-copy_length);
+
+	        n = send(sockfd,copy,256,0);
 	    if (n < 0)
 		     error("ERROR writing to socket");
 	}
