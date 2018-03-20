@@ -223,13 +223,9 @@ int main(int argc , char *argv[])
             {
                 //Check if it was for closing , and also read the
                 //incoming message
-                //printf("ktry\n");
-                for(int i=0;i<256;i++)
-                	buffer[i]='0';
                 if ((valread = read( sd , buffer, 256)) == 0)
                 {
                     //Somebody disconnected , get his details and print
-                        // printf("%s--buffer\n",buffer );
 
                     getpeername(sd , (struct sockaddr*)&address , \
                         (socklen_t*)&addrlen);
@@ -324,7 +320,7 @@ int main(int argc , char *argv[])
                             error_flag=1;
                             if(ran==1)
                             {
-                                printf("Yo\n");
+                                // printf("Yo\n");
                                 error_flag=1;
                                 int x=rand()%strlen(nack);
                                 strcpy(err,nack);

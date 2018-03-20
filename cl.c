@@ -178,7 +178,6 @@ while(1)
 
       strcpy(copy,bu);
       error_switch=rand()%4;
-      // printf("error error_switch is %d",error_switch);
       co++;
       strcpy(bu,copy);
 
