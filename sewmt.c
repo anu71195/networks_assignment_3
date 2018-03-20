@@ -265,13 +265,10 @@ int main(int argc , char *argv[])
                           inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                     printf("type 0 to continue and 1 to exit the server:-");
                     scanf("%d",&decision);
-
                     if(decision==1)
-                    {
-                        close( sd );
                     	exit(1);
-                    }
                     //Close the socket and mark as 0 in list for reuse
+                    close( sd );
                     client_socket[i] = 0;
                 }
 
@@ -281,10 +278,7 @@ int main(int argc , char *argv[])
                 	// printf("%ld is the valread\n",valread);
                     //do
                     //{
-                    int pid=fork();
-                    if(pid==0)
-                    {
-                        client_socket[i] = 0;
+
                        // buffer[valread] = '\0';
                         //send(sd , buffer , strlen(buffer) , 0 );
                 		char temp[256];
@@ -297,10 +291,6 @@ int main(int argc , char *argv[])
                         // 		break;
                         // 	}
                         strcpy(buffer,temp);
-                        int co=0;                                                                              //chk
-
-                    do
-                       {
 
                       printf("data received in binary = %s\n",buffer );
                       char * temp_buffer=(char*)malloc(sizeof(char)*256);
@@ -312,8 +302,9 @@ int main(int argc , char *argv[])
                         	printf("%d message received is wrong\n",check );
                         else
                         	printf("%d message received is right\n",check);
-                        co=0;                                                                              //chk
-                      
+                        int co=0;                                                                              //chk
+                      do
+                       {
                          sleep(0.1);
                          co++;
                         int ran=rand()%3;
@@ -354,16 +345,12 @@ int main(int argc , char *argv[])
 	                            printf("ack is %s but sent ack is %s\n",ack,err);
 
 	                            n = write(newsockfd,err,24);
-                                int temp_read=read( sd , buffer, 256);
-                                if(temp_read<0)
-                                    printf("error in reading data");
 	                        }
 	                        else
 	                        {
 	                        n = write(newsockfd,ack,24);
 	                        printf("no error in ack sent\n" );
 	                        error_flag=0;
-
 	                        }
 
                         }
@@ -389,28 +376,12 @@ int main(int argc , char *argv[])
                             else
                             {
 	                            n = write(newsockfd,nack,33);
-
-
 	                        }
-                            int temp_read=read( sd , buffer, 256);
-                            if(temp_read<0)
-                                printf("error in reading data");
                         }
                         if (n < 0) perror("ERROR writing to socket\n");
-                        printf("i'm here");
-                    }while(error_flag==1 && co<2000);
-                    printf("also here");
-                }
-                 else
-                 {
-                    close(sd);
-                    client_socket[i] = 0;
 
+                    }while(error_flag==1 && co<2);
                 }
-                printf("i'm out ");
-
-    }
-           
             }
         }
     }
