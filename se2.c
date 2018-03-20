@@ -293,7 +293,7 @@ int main(int argc , char *argv[])
                 {
                 	// printf("%ld is the valread\n",valread);
                     int co=0;
-                    printf("read");
+                    // printf("read");
                     do
                     {
 
@@ -323,7 +323,7 @@ int main(int argc , char *argv[])
                         co=0;                                                                              //chk
                       // do
                       //  {
-                         sleep(3);
+                         sleep(1);
                          co++;
                         int ran=rand()%3;
                         if(check==0)

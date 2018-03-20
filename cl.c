@@ -66,7 +66,7 @@ void crc(char *real_input,char ** bu) {
  //clrscr();
 char *input=(char *)malloc(256*sizeof(char));
 char *temp_input=(char *)malloc(256*sizeof(char));
-printf("The input in string is = %s",real_input);
+printf("\n\nThe input in string is = %s",real_input);
  input=stringToBinary(real_input);
  printf("The input in binary is = %s\n",input);
  strcpy(key,"100000111");
@@ -199,7 +199,7 @@ while(1)
         int  bit_error_rate=rand()%strlen(bu);
         if(bit_error_rate>0)
         {
-	        printf("\nErrors are present\n%d is the bit error rate",bit_error_rate);
+	        printf("\nErrors are present\n%d is the bit error rate\nprobability of error rate is %f\n",bit_error_rate,((float)bit_error_rate)/(strlen(bu)));
 	    }
         int i,x,count[strlen(bu)];
         for(i=0;i<strlen(bu);i++)
@@ -230,7 +230,7 @@ while(1)
     }
 
     if(strcmp(copy,bu)!=0)
-	    printf("\nactual data is changed due to error\n"  );
+	    printf("actual data is changed due to error\n"  );
 	else
 		printf("No errors\n");
 	int copy_length=strlen(copy);
@@ -239,8 +239,8 @@ while(1)
     // printf("%d--copylength %c\n",copy_length,copy[copy_length]);	
     n = send(sockfd,copy,256,0);
     if (n < 0)
-         error("ERROR writing to socket");
-   printf("\ndata sent : %s\n",copy );
+         error("ERROR writing to socket\n");
+   printf("data sent : %s\n",copy );
 
     t1=getMin();
 
@@ -250,7 +250,7 @@ while(1)
 
     n = read(sockfd,buffer,255);
     if (n < 0)
-         error("ERROR reading from socket");
+         error("ERROR reading from socket\n");
     if(strcmp(buffer,ack)==0)
     printf("ACK\n" );
     else if(strcmp(buffer,nack)==0)
@@ -265,7 +265,7 @@ while(1)
 
 	        n = send(sockfd,copy,256,0);
 	    if (n < 0)
-		     error("ERROR writing to socket");
+		     error("ERROR writing to socket\n");
 	}
     if(t1-t2>time_out_client || t2-t1 >time_out_client)
     {
