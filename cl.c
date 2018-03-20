@@ -66,8 +66,9 @@ void crc(char *real_input,char ** bu) {
  //clrscr();
 char *input=(char *)malloc(256*sizeof(char));
 char *temp_input=(char *)malloc(256*sizeof(char));
-
+printf("The input in string is = %s",real_input);
  input=stringToBinary(real_input);
+ printf("The input in binary is = %s\n",input);
  strcpy(key,"100000111");
  keylen=strlen(key);
  msglen=strlen(input);
@@ -110,11 +111,11 @@ for(int j=0;j<msglen;j++)
 for(int i=msglen;i<msglen+keylen-1;i++)
   input[i]=temp_input[i];
 
-
-
 printf("the remainder is:-");
 for(int i=msglen;i<msglen+keylen-1;i++)
 	printf("%c",input[i]);
+printf("\n");
+
  (*bu)=input;
 }
 
