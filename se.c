@@ -168,6 +168,7 @@ int main(int argc , char *argv[])
 
     while(TRUE)
     {
+    	printf("inside the while looop\n");
         //clear the socket set
         FD_ZERO(&readfds);
 
@@ -240,6 +241,7 @@ int main(int argc , char *argv[])
         //else its some IO operation on some other socket
         for (i = 0; i < max_clients; i++)
         { 
+        	// printf("client is %d\n",i );
             sd = client_socket[i];
 
             if (FD_ISSET( sd , &readfds))
@@ -367,7 +369,9 @@ int main(int argc , char *argv[])
                             }
 
                             else
-                            n = write(newsockfd,nack,33);
+                            {
+	                            n = write(newsockfd,nack,33);
+	                        }
                         }
                         if (n < 0) perror("ERROR writing to socket\n");
 
