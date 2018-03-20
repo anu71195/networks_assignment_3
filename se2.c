@@ -242,7 +242,7 @@ int main(int argc , char *argv[])
             //         break;
             //     }
             // }
-        printf("Here");
+        // printf("Here");
 
         }
          int pid = fork();
@@ -269,7 +269,7 @@ int main(int argc , char *argv[])
                 // for(int i=0;i<256;i++)
                 // 	buffer[i]='0';
                 // flush(buffer);
-                printf("here");
+                // printf("here");
                 memset(buffer,0,sizeof(buffer));
                 if ((valread = read( sd , buffer, 256)) == 0)
                 {
@@ -310,7 +310,7 @@ int main(int argc , char *argv[])
                         // 	}
                         strcpy(buffer,temp);
 
-                      printf("data received in binary = %s\n",buffer );
+                      printf("\ndata received in binary = %s\n",buffer );
                       char * temp_buffer=(char*)malloc(sizeof(char)*256);
                       printf("data received as string is =");
                       binary_to_string(buffer,&temp_buffer);
