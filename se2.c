@@ -17,7 +17,6 @@
 
 int crcCheck(char* input)
 {
-	// printf("%s is the input\n",input);
     int i,j,keylen,msglen,rem_len;
     char  key[30],temp[30],quot[100],rem[30],key1[30],inp[300];
     strcpy(key,"100000111");
@@ -28,46 +27,49 @@ int crcCheck(char* input)
     char *temp_input=(char *)malloc(256*sizeof(char));
 	strcpy(temp_input,input);
 
-for(int j=0;j<msglen;j++)
-{
-   if(temp_input[j]=='1')
-   { 
-    for(int i=0;i<keylen;i++)
+    for(int j=0;j<msglen;j++)
     {
-      if(temp_input[i+j]==key[i])
-          temp_input[i+j]='0';
-        else 
-          temp_input[i+j]='1';
+       if(temp_input[j]=='1')
+       { 
+            for(int i=0;i<keylen;i++)
+            {
+                if(temp_input[i+j]==key[i])
+                    temp_input[i+j]='0';
+                else 
+                    temp_input[i+j]='1';
+            }
+        }      
     }
-  }
-  
-}
 
-// printf("--temp_input%s--and message lenght is %d\n",temp_input,msglen);
-	
     for(i=0;i<strlen(temp_input);i++)
     {
         if(temp_input[i]=='1')
-           {
-           	return 1;
-           } 
+       {
+       	return 1;
+       } 
     }
     return 0;
 }
 
-char* stringToBinary(char* s) {
+char* stringToBinary(char* s) 
+{
     if(s == NULL) return 0; /* no input string */
     size_t i;
     int j;
     size_t len = strlen(s);
     char *binary =(char *) malloc(len*8 + 1); // each char is one byte (8 bits) and + 1 at the end for null terminator
     binary[0] = '\0';
-    for(i = 0; i < len; ++i) {
+    for(i = 0; i < len; ++i) 
+    {
         char ch = s[i];
-        for(j = 7; j >= 0; --j){
-            if(ch & (1 << j)) {
+        for(j = 7; j >= 0; --j)
+        {
+            if(ch & (1 << j)) 
+            {
                 strcat(binary,"1");
-            } else {
+            } 
+            else 
+            {
                 strcat(binary,"0");
             }
         }
@@ -88,7 +90,6 @@ void binary_to_string(char * s, char **temp_s)
 		{
 			character*=2;
 			character+=(int)s[8*i+j]-48;
-			// printf("--%c--and %d----",s[8*i+j],character);
 		}
 		str_char=character;
 
@@ -104,16 +105,16 @@ int main(int argc , char *argv[])
     	printf("Error in the no of args\n");
     }
     int PORT=atoi(argv[1]);
+    // close(PORT);
     int opt = TRUE;
-    int master_socket , addrlen , newsockfd , client_socket[30] ,
-          max_clients = 30 , activity, i  , sd,n,error_flag=1;
-  ssize_t valread;
+    int master_socket , addrlen , newsockfd , client_socket[30] ,max_clients = 30 , activity, i  , sd,n,error_flag=1;
+    ssize_t valread;
     int max_sd;
     struct sockaddr_in address;
 
     char buffer[256],ack[256],nack[256],err[256],copy[256],str_buffer_check[256];  //data buffers
-        strcpy(ack,"010000010100001101001011");
-      strcpy(nack,"01001110010000010100001101001011");
+    strcpy(ack,"010000010100001101001011");
+    strcpy(nack,"01001110010000010100001101001011");
     //set of socket descriptors
     fd_set readfds;
 
@@ -208,8 +209,7 @@ int main(int argc , char *argv[])
       
         if (FD_ISSET(master_socket, &readfds))
         {
-            if ((newsockfd = accept(master_socket,
-                    (struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
+            if ((newsockfd = accept(master_socket, (struct sockaddr *)&address, (socklen_t*)&addrlen))<0)
             {
                 perror("accept");
                 exit(EXIT_FAILURE);
@@ -245,12 +245,12 @@ int main(int argc , char *argv[])
         // printf("Here");
 
         }
-         int pid = fork();
-          if(pid!=0)
+        int pid = fork();
+        if(pid!=0)
         {
             close(sd);
         }
-          while(pid==0)
+        while(pid==0)
         {
         // printf("Here");
      
@@ -270,162 +270,149 @@ int main(int argc , char *argv[])
                 // 	buffer[i]='0';
                 // flush(buffer);
                 // printf("here");
-                memset(buffer,0,sizeof(buffer));
-                if ((valread = read( sd , buffer, 256)) == 0)
-                {
+            memset(buffer,0,sizeof(buffer));
+            if ((valread = read( sd , buffer, 256)) == 0)
+            {
                     //Somebody disconnected , get his details and print
 
-                    getpeername(sd , (struct sockaddr*)&address , \
-                        (socklen_t*)&addrlen);
-                    printf("Host disconnected , ip %s , port %d \n" ,
-                          inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-                    printf("type 0 to continue and 1 to exit the server:-");
-                    scanf("%d",&decision);
-                    if(decision==1)
-                    	exit(1);
-                    //Close the socket and mark as 0 in list for reuse
-                    close( sd );
-                    client_socket[i] = 0;
-                }
+                getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
+                printf("Host disconnected , ip %s , port %d \n" ,
+                      inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                printf("type 0 to continue and 1 to exit the server:-");
+                scanf("%d",&decision);
+                if(decision==1)
+                	exit(1);
+                //Close the socket and mark as 0 in list for reuse
+                close( sd );
+                client_socket[i] = 0;
+            }
 
                 //Echo back the message that came in
-                else
-                {
+            else
+            {
                 	// printf("%ld is the valread\n",valread);
-                    int co=0;
+                int co=0;
                     // printf("read");
-                    do
-                    {
+                do
+                {
 
                        // buffer[valread] = '\0';
                         //send(sd , buffer , strlen(buffer) , 0 );
-                		char temp[256];
-                		strcpy(temp,buffer);
-                        int le=strlen(buffer);
-                        // for(int i=0;i<strlen(buffer);i++)
-                        // 	if(buffer[i]!='0' && buffer[i]!='1')
-                        // 	{
-                        // 		temp[i]='\0';
-                        // 		break;
-                        // 	}
-                        strcpy(buffer,temp);
-
-                      printf("\ndata received in binary = %s\n",buffer );
-                      char * temp_buffer=(char*)malloc(sizeof(char)*256);
-                      printf("data received as string is =");
-                      binary_to_string(buffer,&temp_buffer);
-                      printf("\n");
-                        int check=crcCheck(buffer);
-                        if (check==1)
-                        	printf("%d message received is wrong\n",check );
-                        else
-                        	printf("%d message received is right\n",check);
-                        co=0;                                                                              //chk
-                      // do
-                      //  {
-                         sleep(1);
-                         co++;
-                        int ran=rand()%3;
-                        if(check==0)
-                        {
+            		char temp[256];
+            		strcpy(temp,buffer);
+                    int le=strlen(buffer);
+                            // for(int i=0;i<strlen(buffer);i++)
+                            // 	if(buffer[i]!='0' && buffer[i]!='1')
+                            // 	{
+                            // 		temp[i]='\0';
+                            // 		break;
+                            // 	}
+                    strcpy(buffer,temp);
+                    printf("\ndata received in binary = %s\n",buffer );
+                    char * temp_buffer=(char*)malloc(sizeof(char)*256);
+                    printf("data received as string is =");
+                    binary_to_string(buffer,&temp_buffer);
+                    printf("\n");
+                    int check=crcCheck(buffer);
+                    if (check==1)
+                    	printf("%d message received is wrong\n",check );
+                    else
+                    	printf("%d message received is right\n",check);
+                    co=0;                                                                              //chk
+                          // do
+                          //  {
+                    sleep(1);
+                    co++;
+                    int ran=rand()%3;
+                    if(check==0)
+                    {
                         while(check==0)
                         {
                             ran=rand()%3;
-	                        printf("Message recieved wihtout error\n");
-	                        if(ran==1)
-	                        {
-	                        	printf("error in ack sent\n");
-	                        	strcpy(err,ack);
-	                            int bit_error_rate=rand()%strlen(ack);
-	                            printf("bit error rate in ack is %d\n",bit_error_rate);
-                                int i,x,count[strlen(ack)];
-						        for(i=0;i<strlen(ack);i++)
-						        {
-						            count[i]=0;
-						        }
-	                            for(i=0;i<bit_error_rate;i++)
-							        {
-							            x=rand()%strlen(ack);
-
-							            while(count[x]!=0 && i!=0)
-							            {
-							         	   x=rand()%strlen(ack);
-
-
-								        }
-
-							            count[x]=1;
-							            if(err[x]=='0')
-							                err[x]='1';
-							            else
-							                err[x]='0';
-
-
-							        }
-	                            
-	                            printf("ack is %s but sent ack is %s\n",ack,err);
-
-	                            n = write(newsockfd,err,24);
-	                        }
-
-	                        else
-	                        {
-	                        n = write(newsockfd,ack,24);
-	                        printf("no error in ack sent\n" );
-	                        error_flag=0;
-                            break;
-	                        }
-                        }
-                        }
-                        else
-                        {
-                            printf("Error during transmission\n");
-                            error_flag=1;
+                            printf("Message recieved wihtout error\n");
                             if(ran==1)
                             {
-                                // printf("Yo\n");
-                                error_flag=1;
-                                int x=rand()%strlen(nack);
-                                strcpy(err,nack);
+                            	printf("error in ack sent\n");
+                            	strcpy(err,ack);
+                                int bit_error_rate=rand()%strlen(ack);
+                                printf("bit error rate in ack is %d\n ",bit_error_rate);
+                                int i,x,count[strlen(ack)];
+    					        for(i=0;i<strlen(ack);i++)
+    					        {
+    					            count[i]=0;
+    					        }
+                                for(i=0;i<bit_error_rate;i++)
+    					        {
+    					            x=rand()%strlen(ack);
+    					            while(count[x]!=0 && i!=0)
+    					            {
+    					         	   x=rand()%strlen(ack);
+    						        }
+    					            count[x]=1;
+    					            if(err[x]=='0')
+    					                err[x]='1';
+    					            else
+    					                err[x]='0';
 
-                                if(err[x]=='0')
-                                    err[x]='1';
-                                else
-                                    err[x]='0';
+    						   } 
+                                printf("ack is %s but sent ack is %s\n",ack,err);
 
-                                n = write(newsockfd,err,25);
-                            }
-
+                                n = write(newsockfd,err,24);
+    	                    }
+     
                             else
                             {
-	                            n = write(newsockfd,nack,33);
-	                        }
-                            if ((valread = read( sd , buffer, 256)) == 0)
-                            {
-                                //Somebody disconnected , get his details and print
-
-                                getpeername(sd , (struct sockaddr*)&address , \
-                                    (socklen_t*)&addrlen);
-                                printf("Host disconnected , ip %s , port %d \n" ,
-                                      inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-                                printf("type 0 to continue and 1 to exit the server:-");
-                                scanf("%d",&decision);
-                                if(decision==1)
-                                    exit(1);
-                                //Close the socket and mark as 0 in list for reuse
-                                close( sd );
-                                client_socket[i] = 0;
+                                n = write(newsockfd,ack,24);
+                                printf("no error in ack sent\n" );
+                                error_flag=0;
+                                break;
                             }
                         }
-                        if (n < 0) perror("ERROR writing to socket\n");
+                    }
+                    else
+                    {
+                        printf("Error during transmission\n");
+                        error_flag=1;
+                        if(ran==1)
+                        {
+                            // printf("Yo\n");
+                            error_flag=1;
+                            int x=rand()%strlen(nack);
+                            strcpy(err,nack);
 
-                    }while(error_flag==1);
-                }
-            // }
-        
-        }
-       
+                            if(err[x]=='0')
+                                err[x]='1';
+                            else
+                                err[x]='0';
+
+                            n = write(newsockfd,err,25);
+                        }
+
+                        else
+                        {
+                            n = write(newsockfd,nack,33);
+                        }
+                        if ((valread = read( sd , buffer, 256)) == 0)
+                        {
+                            //Somebody disconnected , get his details and print
+
+                            getpeername(sd , (struct sockaddr*)&address , \
+                                (socklen_t*)&addrlen);
+                            printf("Host disconnected , ip %s , port %d \n" ,
+                                  inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                            printf("type 0 to continue and 1 to exit the server:-");
+                            scanf("%d",&decision);
+                            if(decision==1)
+                                exit(1);
+                                //Close the socket and mark as 0 in list for reuse
+                            close( sd );
+                            client_socket[i] = 0;
+                        }
+                    }
+                    if (n < 0) perror("ERROR writing to socket\n");
+                }while(error_flag==1);
+            }
+        }  
     }
-
     return 0;
 }

@@ -28,7 +28,7 @@ int getMin()
          a=ti[i+1];
          b=ti[i+2];
          break;
-       }
+        }
       }
     }
     return ((int)a-48)*10+((int)b-48);
@@ -36,7 +36,8 @@ int getMin()
 }
 
 
-char* stringToBinary(char* s) {
+char* stringToBinary(char* s) 
+{
     if(s == NULL) return 0; /* no input string */
     size_t i;
     int j,temp;
@@ -44,22 +45,27 @@ char* stringToBinary(char* s) {
     len--;
     char *binary =(char *) malloc(len*8 + 1); // each char is one byte (8 bits) and + 1 at the end for null terminator
     binary[0] = '\0';
-    for(i = 0; i < len; ++i) {
+    for(i = 0; i < len; ++i) 
+    {
         char ch = s[i];
-        for(j = 7; j >= 0; --j){
+        for(j = 7; j >= 0; --j)
+        {
         	temp=ch &(1 << j);
-            if( temp) {
+            if( temp) 
+            {
                 strcat(binary,"1");
-            } else {
+            } 
+            else 
+            {
                 strcat(binary,"0");
-
             }
         }
     }
     return binary;
 }
 
-void crc(char *real_input,char ** bu) {
+void crc(char *real_input,char ** bu) 
+{
  int i,j,keylen,msglen;
  char key[30],temp[30],quot[100],rem[30],key1[30];
 
@@ -75,39 +81,36 @@ printf("\n\nThe input in string is = %s",real_input);
  char buff[msglen+keylen];
  strcpy(key1,key);
 
- for (i=0;i<keylen-1;i++) {
+ for (i=0;i<keylen-1;i++) 
+ {
    input[msglen+i]='0';
  }
  input[msglen+keylen-1]='\0';
 strcpy(temp_input,input);
 
-
-
-
 for(int j=0;j<msglen;j++)
 {
    if(temp_input[j]=='1')
    { 
-    for(int i=0;i<keylen;i++)
-    {
-      if(temp_input[i+j]==key[i])
-          temp_input[i+j]='0';
-        else 
-          temp_input[i+j]='1';
-    }
-  }
-  else
+	    for(int i=0;i<keylen;i++)
+	    {
+	      if(temp_input[i+j]==key[i])
+	          temp_input[i+j]='0';
+	       else 
+	          temp_input[i+j]='1';
+	    }
+   }
+	else
    { 
-    for(int i=0;i<keylen;i++)
-    {
-      if(temp_input[i+j]=='0')
-          temp_input[i+j]='0';
-        else 
-          temp_input[i+j]='1';
-    }
-  } 
+    	for(int i=0;i<keylen;i++)
+    	{
+      		if(temp_input[i+j]=='0')
+          		temp_input[i+j]='0';
+        	else 
+          		temp_input[i+j]='1';
+    	}
+  	} 
 }
-
 for(int i=msglen;i<msglen+keylen-1;i++)
   input[i]=temp_input[i];
 
@@ -115,10 +118,8 @@ printf("the remainder is:-");
 for(int i=msglen;i<msglen+keylen-1;i++)
 	printf("%c",input[i]);
 printf("\n");
-
  (*bu)=input;
 }
-
 void error(char *msg)
 {
     perror(msg);
@@ -131,15 +132,15 @@ int main(int argc, char *argv[])
     srand(time(NULL));
     int sockfd, portno, n,t1,t2;
     int number_of_trials=2000;
-   int  error_switch=1;
+    int  error_switch=1;
     struct sockaddr_in serv_addr;
     struct hostent *server;
     int time_out_client=3;
-
     char buffer[256],buffe[256],ack[256],nack[256],copy[256];
     strcpy(ack,"010000010100001101001011");
     strcpy(nack,"01001110010000010100001101001011");
-    if (argc < 3) {
+    if (argc < 3) 
+    {
        fprintf(stderr,"usage %s hostname port\n", argv[0]);
        exit(0);
     }
@@ -148,135 +149,118 @@ int main(int argc, char *argv[])
     if (sockfd < 0)
         error("ERROR opening socket");
     server = gethostbyname(argv[1]);
-    if (server == NULL) {
+    if (server == NULL) 
+    {
         fprintf(stderr,"ERROR, no such host\n");
         exit(0);
     }
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr,
-         (char *)&serv_addr.sin_addr.s_addr,
-         server->h_length);
+    bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
     serv_addr.sin_port = htons(portno);
     if (connect(sockfd,(struct sockaddr *)&serv_addr,sizeof(serv_addr)) < 0)
         error("ERROR connecting");
-while(1)
-{
-	printf("type 0 for giving input and 1 for exiting the current client :-");
-	int decide;
-	scanf("%d",&decide);
-	char temp_char;
-	scanf("%c",&temp_char);
-	if(decide==1)
+	while(1)
 	{
-		// close(sockfd);
-		exit(1);
-	}
-    printf("Please enter the message: ");
-    bzero(buffe,256);
-    fgets(buffe,255,stdin);
-    sleep(1);
-    
-    char * t_bu=(char *)malloc(256*sizeof(char));
-    char bu[256];
-    crc(buffe,&t_bu);
-    strcpy(bu,t_bu);
+		printf("type 0 for giving input and 1 for exiting the current client :-");
+		int decide;
+		scanf("%d",&decide);
+		char temp_char;
+		scanf("%c",&temp_char);
+		if(decide==1)
+		{
+			// close(sockfd);
+			exit(1);
+		}
+	    printf("Please enter the message: ");
+	    bzero(buffe,256);
+	    fgets(buffe,255,stdin);
+	    sleep(1);
+	    char * t_bu=(char *)malloc(256*sizeof(char));
+	    char bu[256];
+	    crc(buffe,&t_bu);
+	    strcpy(bu,t_bu);
+	    int co=0;
+    	do
+    	{
+		    strcpy(copy,bu);
+		    error_switch=rand()%2;
+		    co++;
+		    strcpy(bu,copy);  	   
+    		if(error_switch==1)
+    		{
+        		int  bit_error_rate=rand()%strlen(bu);
+        		if(bit_error_rate>0)
+        		{
+	        		printf("Errors are present\n%d is the bit error rate\n",bit_error_rate);
+	    		}
+        		int i,x,count[strlen(bu)];
+        		for(i=0;i<strlen(bu);i++)
+        		{
+            		count[i]=0;
+        		}
 
-    int co=0;
-   
-    do
-    {
+        		for(i=0;i<bit_error_rate;i++)
+        		{
+            		x=rand()%strlen(bu);
+		            while(count[x]!=0 && i!=0)
+            		{
+         	   			x=rand()%strlen(bu);
+         	         }
+            		count[x]=1;
+            		if(copy[x]=='0')
+                		copy[x]='1';
+		            else
+		                copy[x]='0';
+		        }
 
+    		}
 
-      strcpy(copy,bu);
-      error_switch=rand()%2;
-      co++;
-      strcpy(bu,copy);
-
-  	   
-    if(error_switch==1)
-    {
-        int  bit_error_rate=rand()%strlen(bu);
-        if(bit_error_rate>0)
-        {
-	        printf("Errors are present\n%d is the bit error rate\nprobability of error rate is %f\n",bit_error_rate,((float)bit_error_rate)/(strlen(bu)));
-	    }
-        int i,x,count[strlen(bu)];
-        for(i=0;i<strlen(bu);i++)
-        {
-            count[i]=0;
-        }
-
-        for(i=0;i<bit_error_rate;i++)
-        {
-            x=rand()%strlen(bu);
-
-            while(count[x]!=0 && i!=0)
-            {
-         	   x=rand()%strlen(bu);
-
-
-	        }
-
-            count[x]=1;
-            if(copy[x]=='0')
-                copy[x]='1';
-            else
-                copy[x]='0';
-
-
-        }
-
-    }
-
-    if(strcmp(copy,bu)!=0)
-	    printf("actual data is changed due to error\n"  );
-	else
-		printf("No errors\n");
-	int copy_length=strlen(copy);
+   			 if(strcmp(copy,bu)!=0)
+	    		printf("actual data is changed due to error\n"  );
+			else
+				printf("No errors\n");
+			int copy_length=strlen(copy);
 	// copy[copy_length]='\0';
-	memset(copy + copy_length,'\0',256-copy_length);
+			memset(copy + copy_length,'\0',256-copy_length);
     // printf("%d--copylength %c\n",copy_length,copy[copy_length]);	
-    n = send(sockfd,copy,256,0);
-    if (n < 0)
-         error("ERROR writing to socket\n");
-   printf("data sent : %s\n",copy );
+    		n = send(sockfd,copy,256,0);
+		    if (n < 0)
+		         error("ERROR writing to socket\n");
+   			printf("data sent : %s\n",copy );
+    		t1=getMin();
+    		do
+    		{
+      			t2=getMin();
+    			bzero(buffer,256);
+			    n = read(sockfd,buffer,255);
+			    if (n < 0)
+			         error("ERROR reading from socket\n");
+			    if(strcmp(buffer,ack)==0)
+			    printf("ACK\n" );
+			    else if(strcmp(buffer,nack)==0)
+			    printf("NACK\n" );
+			    else
+			    {
+				    printf("Unknown response\n");
+				    copy_length=strlen(copy);
+				    // printf("%d--copylength %c\n",copy_length,copy[copy_length]);
+				    // copy[copy_length]='\0';
+					memset(copy + copy_length,'\0',256-copy_length);
+			        n = send(sockfd,copy,256,0);
+	    			if (n < 0)
+				     	error("ERROR writing to socket\n");
+				}
+			    if(t1-t2>time_out_client || t2-t1 >time_out_client)
+			    {
+				    strcpy(buffer,nack);
+				    break;
+			    }
 
-    t1=getMin();
-
-    do{
-      t2=getMin();
-    bzero(buffer,256);
-
-    n = read(sockfd,buffer,255);
-    if (n < 0)
-         error("ERROR reading from socket\n");
-    if(strcmp(buffer,ack)==0)
-    printf("ACK\n" );
-    else if(strcmp(buffer,nack)==0)
-    printf("NACK\n" );
-    else
-    {
-	    printf("Unknown response\n");
-	    copy_length=strlen(copy);
-	    // printf("%d--copylength %c\n",copy_length,copy[copy_length]);
-	    // copy[copy_length]='\0';
-	memset(copy + copy_length,'\0',256-copy_length);
-
-	        n = send(sockfd,copy,256,0);
-	    if (n < 0)
-		     error("ERROR writing to socket\n");
+   			}while(strcmp(buffer,ack)!=0&& strcmp(buffer,nack)!=0);
+		    // if(strcmp(buffer,ack)==0)
+		    // 	exit(1);
+		}while(strcmp(buffer,nack)==0 && co<number_of_trials);
 	}
-    if(t1-t2>time_out_client || t2-t1 >time_out_client)
-    {
-	    strcpy(buffer,nack);
-	    break;
-    }
-
-    }while(strcmp(buffer,ack)!=0&& strcmp(buffer,nack)!=0);
-    // if(strcmp(buffer,ack)==0)
-    // 	exit(1);
-  }while(strcmp(buffer,nack)==0 && co<number_of_trials);
-}
     return 0;
 }
