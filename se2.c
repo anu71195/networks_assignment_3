@@ -204,6 +204,8 @@ int main(int argc , char *argv[])
 
         //If something happened on the master socket ,
         //then its an incoming connection
+              
+      
         if (FD_ISSET(master_socket, &readfds))
         {
             if ((newsockfd = accept(master_socket,
@@ -226,34 +228,48 @@ int main(int argc , char *argv[])
            // puts("Welcome message sent successfully");
 
             //add new socket to array of sockets
-            for (i = 0; i < max_clients; i++)
-            {
 
-                //if position is empty
-                if( client_socket[i] == 0 )
-                {
-                    client_socket[i] = newsockfd;
-                    printf("Adding to list of sockets as %d\n" , i);
 
-                    break;
-                }
-            }
+            // for (i = 0; i < max_clients; i++)
+            // {
+
+            //     //if position is empty
+            //     if( client_socket[i] == 0 )
+            //     {
+            //         client_socket[i] = newsockfd;
+            //         printf("Adding to list of sockets as %d\n" , i);
+
+            //         break;
+            //     }
+            // }
+        printf("Here");
+
         }
-
+         int pid = fork();
+          if(pid!=0)
+        {
+            close(sd);
+        }
+          while(pid==0)
+        {
+        // printf("Here");
+     
         //else its some IO operation on some other socket
-        for (i = 0; i < max_clients; i++)
-        { 
+        // for (i = 0; i < max_clients; i++)
+        // { 
         	// printf("client is %d\n",i );
-            sd = client_socket[i];
+            sd = newsockfd;
+            // printf("%d is the sd",sd);
 
-            if (FD_ISSET( sd , &readfds))
-            {
+            // if (FD_ISSET( sd , &readfds))
+            // {
                 //Check if it was for closing , and also read the
                 //incoming message
                 //printf("ktry\n");
                 // for(int i=0;i<256;i++)
                 // 	buffer[i]='0';
                 // flush(buffer);
+                printf("here");
                 memset(buffer,0,sizeof(buffer));
                 if ((valread = read( sd , buffer, 256)) == 0)
                 {
@@ -277,6 +293,7 @@ int main(int argc , char *argv[])
                 {
                 	// printf("%ld is the valread\n",valread);
                     int co=0;
+                    printf("read");
                     do
                     {
 
@@ -306,7 +323,7 @@ int main(int argc , char *argv[])
                         co=0;                                                                              //chk
                       // do
                       //  {
-                         sleep(0.1);
+                         sleep(1);
                          co++;
                         int ran=rand()%3;
                         if(check==0)
@@ -404,8 +421,10 @@ int main(int argc , char *argv[])
 
                     }while(error_flag==1);
                 }
-            }
+            // }
+        
         }
+       
     }
 
     return 0;
