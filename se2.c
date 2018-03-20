@@ -323,7 +323,7 @@ int main(int argc , char *argv[])
                         co=0;                                                                              //chk
                       // do
                       //  {
-                         sleep(1);
+                         sleep(3);
                          co++;
                         int ran=rand()%3;
                         if(check==0)
