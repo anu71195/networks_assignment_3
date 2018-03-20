@@ -42,7 +42,7 @@ for(int j=0;j<msglen;j++)
   
 }
 
-printf("--temp_input%s--and message lenght is %d",temp_input,msglen);
+// printf("--temp_input%s--and message lenght is %d",temp_input,msglen);
 	
     for(i=0;i<strlen(temp_input);i++)
     {
@@ -225,8 +225,8 @@ int main(int argc , char *argv[])
                 //incoming message
                 //printf("ktry\n");
                 for(int i=0;i<256;i++)
-                	buffer[i]='\0';
-                if ((valread = read( sd , buffer, 1024)) == 0)
+                	buffer[i]='0';
+                if ((valread = read( sd , buffer, 256)) == 0)
                 {
                     //Somebody disconnected , get his details and print
                         // printf("%s--buffer\n",buffer );
@@ -260,9 +260,12 @@ int main(int argc , char *argv[])
                         	}
                         strcpy(buffer,temp);
 
-                      printf("%s--bufer\n",buffer );
+                      printf("data received in binary = %s\n",buffer );
                         int check=crcCheck(buffer);
-                        printf("check%d---i'm check\n",check );
+                        if (check==1)
+                        	printf("%d message received is wrong\n",check );
+                        else
+                        	printf("%d message received is right\n",check);
                         int co=0;                                                                              //chk
                       do
                        {
@@ -271,26 +274,48 @@ int main(int argc , char *argv[])
                         int ran=rand()%3;
                         if(check==0)
                         {
-                        printf("Message recieved wihtout error");
-                        if(ran==1)
-                        {
-                        	printf("ran is 1");
+	                        printf("Message recieved wihtout error");
+	                        if(ran==1)
+	                        {
+	                        	printf("ran is 1 so error in ack sent");
+	                        	strcpy(err,ack);
+	                            int bit_error_rate=rand()%strlen(ack);
+	                            printf("bit error rate in ack is %d\n",bit_error_rate);
+                                int i,x,count[strlen(ack)];
+						        for(i=0;i<strlen(ack);i++)
+						        {
+						            count[i]=0;
+						        }
+	                            for(i=0;i<bit_error_rate;i++)
+							        {
+							            x=rand()%strlen(ack);
 
-                            int x=rand()%strlen(ack);
-                            strcpy(err,ack);
-                            if(err[x]=='0')
-                            err[x]='1';
-                            else
-                            err[x]='0';
+							            while(count[x]!=0 && i!=0)
+							            {
+							         	   x=rand()%strlen(ack);
 
-                            n = write(newsockfd,err,24);
-                        }
-                        else
-                        {
-                        n = write(newsockfd,ack,24);
-                        printf("f\n" );
-                        error_flag=0;
-                        }
+
+								        }
+
+							            count[x]=1;
+							            if(err[x]=='0')
+							                err[x]='1';
+							            else
+							                err[x]='0';
+
+
+							        }
+	                            
+	                            printf("ack is %s but sent ack is %s\n",ack,err);
+
+	                            n = write(newsockfd,err,24);
+	                        }
+	                        else
+	                        {
+	                        n = write(newsockfd,ack,24);
+	                        printf("ran is not 1 so no error in ack sent\n" );
+	                        error_flag=0;
+	                        }
 
                         }
                         else
@@ -315,7 +340,7 @@ int main(int argc , char *argv[])
                             else
                             n = write(newsockfd,nack,32);
                         }
-                        if (n < 0) error("ERROR writing to socket");
+                        if (n < 0) perror("ERROR writing to socket");
 
                     }while(error_flag==1 && co<8);
                 }
