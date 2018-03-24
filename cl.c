@@ -9,7 +9,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-int getMin()
+int getMin()//gets the current time
 {
    int i,count=0;
    char ti[50];
@@ -36,7 +36,7 @@ int getMin()
 }
 
 
-char* stringToBinary(char* s) 
+char* stringToBinary(char* s) //converts the input string into its binary format
 {
     if(s == NULL) return 0; /* no input string */
     size_t i;
@@ -64,7 +64,7 @@ char* stringToBinary(char* s)
     return binary;
 }
 
-void crc(char *real_input,char ** bu) 
+void crc(char *real_input,char ** bu) //generates the remainder for the binary code generated for the user input
 {
  int i,j,keylen,msglen;
  char key[30],temp[30],quot[100],rem[30],key1[30];
@@ -83,7 +83,7 @@ printf("\n\nThe input in string is = %s",real_input);
 
  for (i=0;i<keylen-1;i++) 
  {
-   input[msglen+i]='0';
+   input[msglen+i]='0';//because the degree of the polynomial -1 will be the number of redundancy bits
  }
  input[msglen+keylen-1]='\0';
 strcpy(temp_input,input);
@@ -120,7 +120,7 @@ for(int i=msglen;i<msglen+keylen-1;i++)
 printf("\n");
  (*bu)=input;
 }
-void error(char *msg)
+void error(char *msg)//to throw a message in the code 
 {
     perror(msg);
     exit(0);
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
     char buffer[256],buffe[256],ack[256],nack[256],copy[256];
     strcpy(ack,"010000010100001101001011");
     strcpy(nack,"01001110010000010100001101001011");
-    if (argc < 3) 
+    if (argc < 3) //if the input is not as much as expected number it will throw an error
     {
        fprintf(stderr,"usage %s hostname port\n", argv[0]);
        exit(0);
